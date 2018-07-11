@@ -1,0 +1,22 @@
+-- DROP TABLE IF EXISTS 'users';
+DROP TABLE IF EXISTS 'surveys';
+DROP TABLE IF EXISTS 'survey_responses';
+
+-- create TABLE users (
+--   id INTEGER PRIMARY KEY AUTOINCREMENT,
+--   name TEXT UNIQUE NOT NULL
+-- );
+
+create TABLE surveys (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT UNIQUE NOT NULL,
+  available_places INTEGER NOT NULL DEFAULT 30,
+  user INTEGER NOT NULL
+);
+
+create TABLE survey_responses (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  survey INTEGER NOT NULL,
+  user INTEGER NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
