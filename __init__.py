@@ -30,7 +30,7 @@ def create_app(test_config=None):
     from . import survey
     app.register_blueprint(survey.bp)
 
-    from . import survey_answer
-    app.register_blueprint(survey_answer.bp)
+    from . import survey_response
+    app.register_blueprint(survey_response.bp)
 
     return app

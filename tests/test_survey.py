@@ -26,7 +26,7 @@ def test_get_surveys(client, app):
             'available_places': 30,
             'id': 1,
             'name': 'RHCP',
-            'survey_answers_count': 0,
+            'survey_responses_count': 0,
             'user': 11
         }
 
@@ -48,7 +48,7 @@ def test_create_survey(client, app):
             'id': 1,
             'name': 'name of survey',
             'available_places': 45,
-            'survey_answers_count': 0,
+            'survey_responses_count': 0,
             'user': 77
         }
 

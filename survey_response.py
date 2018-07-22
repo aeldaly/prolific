@@ -10,16 +10,16 @@ import sqlite3
 
 from prolific.db import get_db
 
-bp = Blueprint('survey_answer', __name__, url_prefix='/survey_answers')
+bp = Blueprint('survey_response', __name__, url_prefix='/survey_responses')
 
 @bp.route('', methods=['GET'])
 def index():
-  survey_answers = get_db().execute('SELECT * FROM survey_responses').fetchall()
+  survey_responses = get_db().execute('SELECT * FROM survey_responses').fetchall()
 
-  if survey_answers:
-    return jsonify(survey_answers)
+  if survey_responses:
+    return jsonify(survey_responses)
   else:
-    return 'No Survey Answers in System'
+    return 'No Survey Responses in System'
 
 
 @bp.route('', methods=['POST'])
@@ -34,22 +34,22 @@ def create():
   ).fetchone()
 
   if survey:
-    survey_answers_count = survey['survey_answers_count']
+    survey_responses_count = survey['survey_responses_count']
     available_places = survey['available_places']
 
-    if survey_answers_count < available_places:
+    if survey_responses_count < available_places:
       try:
         db.execute(
           'INSERT INTO survey_responses (survey, user) VALUES (?, ?)',
           (survey_id, user_id)
         )
         db.execute(
-            'UPDATE surveys SET survey_answers_count = ? WHERE id = ?',
-            (survey_answers_count + 1, survey_id)
+            'UPDATE surveys SET survey_responses_count = ? WHERE id = ?',
+            (survey_responses_count + 1, survey_id)
         )
         db.commit()
 
-        return 'Successfully created Survey Answer'
+        return 'Successfully created Survey Response'
       except sqlite3.IntegrityError:
         return 'User has already submitted response for this survey', 400
     else:

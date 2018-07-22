@@ -11,7 +11,7 @@ CREATE TABLE surveys (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT UNIQUE NOT NULL,
   available_places INTEGER NOT NULL DEFAULT 30,
-  survey_answers_count INTEGER NOT NULL DEFAULT 0,
+  survey_responses_count INTEGER NOT NULL DEFAULT 0,
   user INTEGER NOT NULL
 );
 

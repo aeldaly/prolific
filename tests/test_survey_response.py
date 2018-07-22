@@ -4,11 +4,11 @@ import json
 from ..db import get_db
 
 
-def test_get_survey_answers_empty_db(client):
-    response = client.get('/survey_answers')
+def test_get_survey_responses_empty_db(client):
+    response = client.get('/survey_responses')
 
     assert response.status_code == 200
-    assert response.data == b'No Survey Answers in System'
+    assert response.data == b'No Survey Responses in System'
 
 
 def test_get_surveys(client, app):
@@ -19,7 +19,7 @@ def test_get_surveys(client, app):
             (1, 11)
         )
 
-        response = client.get('/survey_answers')
+        response = client.get('/survey_responses')
         json_response = json.loads(response.get_data(as_text=True))[0]
 
         assert response.status_code == 200
@@ -29,7 +29,7 @@ def test_get_surveys(client, app):
 
 def test_create_survey_response_with_no_survey(client, app):
     response = client.post(
-        '/survey_answers', data={
+        '/survey_responses', data={
             'survey': '1',
             'user': 77
         }
@@ -48,20 +48,20 @@ def test_create_survey_response(client, app):
         )
 
         response = client.post(
-            '/survey_answers', data={
+            '/survey_responses', data={
                 'survey': 1,
                 'user': 77
             }
         )
 
         assert response.status_code == 200
-        assert response.data == b'Successfully created Survey Answer'
+        assert response.data == b'Successfully created Survey Response'
 
         row = get_db().execute(
             'SELECT * FROM surveys'
         ).fetchall()[0]
 
-        assert row['survey_answers_count'] == 1
+        assert row['survey_responses_count'] == 1
         
 
 def test_create_survey_response_max_reached(client, app):
@@ -73,14 +73,14 @@ def test_create_survey_response_max_reached(client, app):
         )
 
         client.post(
-            '/survey_answers', data={
+            '/survey_responses', data={
                 'survey': 1,
                 'user': 77
             }
         )
         
         response = client.post(
-            '/survey_answers', data={
+            '/survey_responses', data={
                 'survey': 1,
                 'user': 78
             }
@@ -93,7 +93,7 @@ def test_create_survey_response_max_reached(client, app):
             'SELECT * FROM surveys'
         ).fetchall()[0]
 
-        assert row['survey_answers_count'] == 1
+        assert row['survey_responses_count'] == 1
 
 
 def test_create_survey_response_duplicate_user(client, app):
@@ -105,14 +105,14 @@ def test_create_survey_response_duplicate_user(client, app):
         )
 
         client.post(
-            '/survey_answers', data={
+            '/survey_responses', data={
                 'survey': 1,
                 'user': 77
             }
         )
 
         response = client.post(
-            '/survey_answers', data={
+            '/survey_responses', data={
                 'survey': 1,
                 'user': 77
             }
@@ -125,4 +125,4 @@ def test_create_survey_response_duplicate_user(client, app):
             'SELECT * FROM surveys'
         ).fetchall()[0]
 
-        assert row['survey_answers_count'] == 1
+        assert row['survey_responses_count'] == 1
