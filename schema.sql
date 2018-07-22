@@ -7,16 +7,19 @@ DROP TABLE IF EXISTS 'survey_responses';
 --   name TEXT UNIQUE NOT NULL
 -- );
 
-create TABLE surveys (
+CREATE TABLE surveys (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT UNIQUE NOT NULL,
   available_places INTEGER NOT NULL DEFAULT 30,
+  survey_answers_count INTEGER NOT NULL DEFAULT 0,
   user INTEGER NOT NULL
 );
 
-create TABLE survey_responses (
+CREATE TABLE survey_responses (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   survey INTEGER NOT NULL,
   user INTEGER NOT NULL,
-  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT unique_user_in_survey UNIQUE (survey, user)
 );
